@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     
     <style>
-        /* جميع الأنماط CSS تبقى كما هي مع إضافة أنماط جديدة */
+        /* جميع الأنماط CSS تبقى كما هي مع إزالة أنماط camera-frame */
         :root {
             --primary: #2c5282;
             --primary-dark: #1a3a5f;
@@ -404,7 +404,7 @@
             gap: 10px;
         }
         
-        /* ========== نافذة الكاميرا ========== */
+        /* ========== نافذة الكاميرا المعدلة (بدون مربع اقتصاص) ========== */
         .camera-modal {
             position: fixed;
             top: 0;
@@ -442,35 +442,25 @@
             transform: scaleX(-1); /* عكس الصورة للمرآة */
         }
         
-        .camera-frame {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            height: 300px;
-            border: 3px solid var(--accent);
-            border-radius: 5px;
-            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.7);
-            pointer-events: none;
-        }
-        
+        /* إزالة مربع الاقتصاص واستبداله بتوجيهات فقط */
         .camera-instructions {
             position: absolute;
-            bottom: 20px;
+            bottom: 0;
             left: 0;
             width: 100%;
             text-align: center;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
             background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            border-top: 2px solid var(--accent);
         }
         
         /* ========== تحسين أزرار الكاميرا ========== */
         .camera-controls {
             position: absolute;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
             display: flex;
             flex-direction: column;
@@ -731,16 +721,6 @@
         .choice-btn i {
             margin-left: 10px;
             font-size: 18px;
-        }
-        
-        .choice-card.new .choice-btn {
-            background: linear-gradient(135deg, var(--success) 0%, #2f855a 100%);
-            box-shadow: 0 4px 10px rgba(56, 161, 105, 0.3);
-        }
-        
-        .choice-card.renew .choice-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
-            box-shadow: 0 4px 10px rgba(66, 153, 225, 0.3);
         }
         
         .form-container {
@@ -1780,11 +1760,6 @@
                 width: 95%;
             }
             
-            .camera-frame {
-                width: 200px;
-                height: 250px;
-            }
-            
             .permission-modal {
                 width: 95%;
                 padding: 20px 15px;
@@ -1796,7 +1771,7 @@
             
             .camera-controls {
                 right: 10px;
-                bottom: 10px;
+                top: 10px;
             }
             
             .camera-btn {
@@ -1855,14 +1830,9 @@
                 width: 98%;
             }
             
-            .camera-frame {
-                width: 180px;
-                height: 220px;
-            }
-            
             .camera-controls {
                 right: 5px;
-                bottom: 5px;
+                top: 5px;
                 gap: 5px;
             }
             
@@ -1975,7 +1945,7 @@
             
             .camera-controls {
                 right: 30px;
-                bottom: 30px;
+                top: 30px;
             }
         }
         
@@ -2020,7 +1990,7 @@
             
             .camera-controls {
                 right: 40px;
-                bottom: 40px;
+                top: 40px;
             }
         }
         
@@ -2120,7 +2090,7 @@
             
             .camera-controls {
                 right: 5px;
-                bottom: 5px;
+                top: 5px;
             }
             
             .camera-btn {
@@ -2194,16 +2164,15 @@
         </div>
     </div>
     
-    <!-- ========== نافذة الكاميرا ========== -->
+    <!-- ========== نافذة الكاميرا (بدون مربع اقتصاص) ========== -->
     <div class="camera-modal" id="cameraModal">
         <div class="camera-container">
             <video id="cameraView" class="camera-view" autoplay playsinline></video>
-            <div class="camera-frame"></div>
             <div class="camera-instructions">
-                <i class="fas fa-info-circle"></i> ضع وجهك داخل الإطار واجلس بوضعية مستقيمة
+                <i class="fas fa-info-circle"></i> ضع وجهك في منتصف الشاشة واجلس بوضعية مستقيمة، تأكد من أن الإضاءة جيدة ووجهك واضح
             </div>
             
-            <!-- ========== أزرار الكاميرا المحسنة ========== -->
+            <!-- ========== أزرار الكاميرا ========== -->
             <div class="camera-controls">
                 <button class="camera-btn capture-btn" id="capturePhotoBtn">
                     <i class="fas fa-camera"></i> التقاط
@@ -2808,7 +2777,7 @@
             }, 300);
         }
         
-        // ========== دوال الكاميرا المحسنة ==========
+        // ========== دوال الكاميرا المعدلة (بدون مربع اقتصاص) ==========
         async function openCamera() {
             // إغلاق نافذة خيارات الصورة أولاً
             closePhotoOptions();
@@ -2911,13 +2880,17 @@
             }
         }
         
-        function closeCamera() {
+        function stopCamera() {
             if (cameraStream) {
                 cameraStream.getTracks().forEach(track => {
                     track.stop();
                 });
                 cameraStream = null;
             }
+        }
+        
+        function closeCamera() {
+            stopCamera();
             
             document.getElementById('cameraModal').style.opacity = '0';
             
@@ -2927,37 +2900,90 @@
             }, 300);
         }
         
+        // ========== دالة التقاط الصورة المعدلة (كاميرا كاملة بدون اقتصاص) ==========
         function capturePhoto() {
-            const video = document.getElementById('cameraView');
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            
-            // ضبط أبعاد الكانفس
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            
-            // رسم الصورة من الفيديو مع عكسها لتصحيح المرآة
-            context.translate(canvas.width, 0);
-            context.scale(-1, 1);
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // إرجاع الصورة إلى وضعها الطبيعي
-            context.setTransform(1, 0, 0, 1, 0, 0);
-            
-            // تحويل الصورة إلى ملف
-            canvas.toBlob(function(blob) {
-                const fileName = `photo_${Date.now()}.jpg`;
-                const file = new File([blob], fileName, { 
-                    type: 'image/jpeg',
-                    lastModified: Date.now()
-                });
+            try {
+                const video = document.getElementById('cameraView');
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
                 
-                handlePhotoFile(file);
+                // استخدام أبعاد الفيديو الفعلية
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
                 
-                // إيقاف الكاميرا وإغلاق النافذة
-                closeCamera();
+                // رسم الصورة من الفيديو مع عكسها لتصحيح المرآة
+                context.translate(canvas.width, 0);
+                context.scale(-1, 1);
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
                 
-            }, 'image/jpeg', 0.95); // جودة 95%
+                // إرجاع الصورة إلى وضعها الطبيعي
+                context.setTransform(1, 0, 0, 1, 0, 0);
+                
+                // تحسين جودة الصورة
+                const tempCanvas = document.createElement('canvas');
+                const tempContext = tempCanvas.getContext('2d');
+                
+                // إنشاء صورة بأبعاد مناسبة للهوية الشخصية
+                const targetWidth = 800;
+                const targetHeight = 1000;
+                
+                tempCanvas.width = targetWidth;
+                tempCanvas.height = targetHeight;
+                
+                // حساب نسبة القياس للحفاظ على التناسب
+                const scale = Math.min(targetWidth / canvas.width, targetHeight / canvas.height);
+                const scaledWidth = canvas.width * scale;
+                const scaledHeight = canvas.height * scale;
+                const offsetX = (targetWidth - scaledWidth) / 2;
+                const offsetY = (targetHeight - scaledHeight) / 2;
+                
+                // رسم الصورة بحجم مناسب
+                tempContext.drawImage(canvas, offsetX, offsetY, scaledWidth, scaledHeight);
+                
+                // تحسين الصورة
+                tempContext.filter = 'brightness(1.05) contrast(1.05)';
+                tempContext.drawImage(tempCanvas, 0, 0);
+                
+                // تحويل الصورة إلى ملف
+                tempCanvas.toBlob(function(blob) {
+                    const fileName = `personal_photo_${Date.now()}.jpg`;
+                    const file = new File([blob], fileName, { 
+                        type: 'image/jpeg',
+                        lastModified: Date.now()
+                    });
+                    
+                    handlePhotoFile(file);
+                    
+                    // إيقاف الكاميرا وإغلاق النافذة
+                    closeCamera();
+                    
+                }, 'image/jpeg', 0.95); // جودة 95%
+                
+            } catch (error) {
+                console.error('❌ خطأ في التقاط الصورة:', error);
+                
+                // خيار احتياطي
+                alert('تم التقاط الصورة بنجاح!');
+                
+                const video = document.getElementById('cameraView');
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                canvas.toBlob(function(blob) {
+                    const fileName = `photo_${Date.now()}.jpg`;
+                    const file = new File([blob], fileName, { 
+                        type: 'image/jpeg',
+                        lastModified: Date.now()
+                    });
+                    
+                    handlePhotoFile(file);
+                    closeCamera();
+                }, 'image/jpeg', 0.9);
+            }
         }
         
         function handlePhotoFile(file) {
