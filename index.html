@@ -1,0 +1,3694 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتحاد نقابات العمال في العراق - استمارة انتساب</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <!-- ✅ Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    
+    <style>
+        /* جميع الأنماط CSS تبقى كما هي مع إضافة أنماط جديدة */
+        :root {
+            --primary: #2c5282;
+            --primary-dark: #1a3a5f;
+            --secondary: #e53e3e;
+            --accent: #ffd700;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --light: #f7fafc;
+            --dark: #2d3748;
+            --gray: #718096;
+            --gray-light: #e2e8f0;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --border-radius-large: 16px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            font-weight: 400;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background-color: white;
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 0.6s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.98); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%);
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border: 3px solid var(--accent);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: rotate(10deg) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+        }
+        
+        .titles {
+            text-align: center;
+        }
+        
+        .main-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: white;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            line-height: 1.3;
+        }
+        
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .sub-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .form-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 15px;
+            color: var(--accent);
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* ========== نافذة الخطأ الجديدة ========== */
+        .error-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            border-radius: var(--border-radius-large);
+            padding: 30px 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            z-index: 2000;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            border: 3px solid var(--secondary);
+            display: none;
+            opacity: 0;
+            animation: errorShow 0.5s forwards;
+        }
+        
+        @keyframes errorShow {
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .error-logo {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 3px solid var(--secondary);
+            box-shadow: 0 5px 15px rgba(229, 62, 62, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .error-logo i {
+            font-size: 35px;
+            color: var(--secondary);
+        }
+        
+        .error-title {
+            font-size: 22px;
+            color: #c53030;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        
+        .error-message {
+            font-size: 16px;
+            color: var(--dark);
+            margin-bottom: 25px;
+            line-height: 1.6;
+            padding: 0 10px;
+        }
+        
+        .error-field {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px solid var(--secondary);
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+        
+        .error-btn {
+            background: linear-gradient(135deg, var(--secondary) 0%, #c53030 100%);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 200px;
+            box-shadow: 0 5px 15px rgba(229, 62, 62, 0.3);
+            margin-top: 10px;
+        }
+        
+        .error-btn:hover {
+            background: linear-gradient(135deg, #c53030 0%, var(--secondary) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(229, 62, 62, 0.4);
+        }
+        
+        .error-btn i {
+            margin-left: 8px;
+        }
+
+        /* ========== نافذة إذن الكاميرا الجديدة ========== */
+        .permission-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(135deg, #fff9db 0%, #ffec99 100%);
+            border-radius: var(--border-radius-large);
+            padding: 30px 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            z-index: 2002;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            border: 3px solid var(--warning);
+            display: none;
+            opacity: 0;
+            animation: errorShow 0.5s forwards;
+        }
+        
+        .permission-logo {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 3px solid var(--warning);
+            box-shadow: 0 5px 15px rgba(214, 158, 46, 0.3);
+        }
+        
+        .permission-title {
+            font-size: 22px;
+            color: #b45309;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        
+        .permission-message {
+            font-size: 16px;
+            color: var(--dark);
+            margin-bottom: 25px;
+            line-height: 1.6;
+            padding: 0 10px;
+        }
+        
+        .permission-btn {
+            background: linear-gradient(135deg, var(--warning) 0%, #b45309 100%);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 200px;
+            box-shadow: 0 5px 15px rgba(214, 158, 46, 0.3);
+            margin-top: 10px;
+        }
+        
+        .permission-btn:hover {
+            background: linear-gradient(135deg, #b45309 0%, var(--warning) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(214, 158, 46, 0.4);
+        }
+        
+        .settings-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 180px;
+            box-shadow: 0 5px 15px rgba(44, 82, 130, 0.3);
+            margin-top: 15px;
+            margin-right: 10px;
+        }
+        
+        .settings-btn:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            transform: translateY(-2px);
+        }
+        
+        .permission-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        /* ========== نافذة الكاميرا ========== */
+        .camera-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2001;
+            display: none;
+            opacity: 0;
+            animation: fadeInOverlay 0.3s forwards;
+        }
+        
+        .camera-modal.visible {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .camera-container {
+            width: 90%;
+            max-width: 500px;
+            background: black;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .camera-view {
+            width: 100%;
+            height: auto;
+            display: block;
+            transform: scaleX(-1); /* عكس الصورة للمرآة */
+        }
+        
+        .camera-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 300px;
+            border: 3px solid var(--accent);
+            border-radius: 5px;
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.7);
+            pointer-events: none;
+        }
+        
+        .camera-instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+        }
+        
+        .camera-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .camera-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 150px;
+            justify-content: center;
+        }
+        
+        .capture-btn {
+            background: linear-gradient(135deg, var(--success) 0%, #2f855a 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(56, 161, 105, 0.3);
+        }
+        
+        .cancel-camera-btn {
+            background: linear-gradient(135deg, var(--secondary) 0%, #c53030 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(229, 62, 62, 0.3);
+        }
+        
+        .camera-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .camera-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .camera-btn i {
+            font-size: 18px;
+        }
+        
+        .choice-screen {
+            padding: 30px 20px;
+            text-align: center;
+            background: var(--light);
+            animation: slideIn 0.6s ease-out;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(-20px) scale(0.98); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0) scale(1); 
+            }
+        }
+        
+        .choice-title {
+            font-size: 24px;
+            color: var(--primary-dark);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .choice-title::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 50%;
+            height: 2px;
+            background: var(--accent);
+        }
+        
+        .choice-description {
+            color: var(--gray);
+            font-size: 16px;
+            max-width: 100%;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            padding: 0 10px;
+        }
+        
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 20px;
+            padding: 0 5px;
+        }
+        
+        .choice-card {
+            width: 100%;
+            background: white;
+            border-radius: var(--border-radius-large);
+            padding: 25px 20px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .choice-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            z-index: 2;
+        }
+        
+        .choice-card.new::before {
+            background: linear-gradient(90deg, var(--success) 0%, #68d391 100%);
+        }
+        
+        .choice-card.renew::before {
+            background: linear-gradient(90deg, var(--primary) 0%, #4299e1 100%);
+        }
+        
+        .choice-card:hover, .choice-card:focus {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .choice-card:active {
+            transform: translateY(-3px) scale(1.01);
+        }
+        
+        .choice-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(44, 82, 130, 0.05) 0%, transparent 100%);
+            z-index: -1;
+        }
+        
+        .choice-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .choice-card:hover .choice-icon {
+            transform: scale(1.05);
+        }
+        
+        .choice-card.new .choice-icon {
+            color: var(--success);
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+        }
+        
+        .choice-card.renew .choice-icon {
+            color: var(--primary);
+            background: linear-gradient(135deg, #bee3f8, #90cdf4);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+        }
+        
+        .choice-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+        
+        .choice-card p {
+            color: var(--gray);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        .choice-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 250px;
+            box-shadow: 0 4px 10px rgba(44, 82, 130, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        
+        .choice-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+            transform: translateX(-100%);
+            transition: var(--transition);
+        }
+        
+        .choice-btn:hover::before, .choice-btn:focus::before {
+            transform: translateX(0);
+        }
+        
+        .choice-btn:hover, .choice-btn:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(44, 82, 130, 0.4);
+            outline: none;
+        }
+        
+        .choice-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(44, 82, 130, 0.3);
+        }
+        
+        .choice-btn i {
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        
+        .choice-card.new .choice-btn {
+            background: linear-gradient(135deg, var(--success) 0%, #2f855a 100%);
+            box-shadow: 0 4px 10px rgba(56, 161, 105, 0.3);
+        }
+        
+        .choice-card.renew .choice-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            box-shadow: 0 4px 10px rgba(66, 153, 225, 0.3);
+        }
+        
+        .form-container {
+            padding: 25px 20px;
+            display: none;
+            background: var(--light);
+            animation: fadeInUp 0.6s ease-out;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .back-btn {
+            background: linear-gradient(135deg, var(--gray) 0%, #4a5568 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 3px 8px rgba(113, 128, 150, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .back-btn:hover, .back-btn:focus {
+            background: linear-gradient(135deg, #4a5568 0%, var(--gray) 100%);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(113, 128, 150, 0.4);
+            outline: none;
+        }
+        
+        .back-btn i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .form-type-indicator {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-type-indicator.new {
+            background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .form-type-indicator.renew {
+            background: linear-gradient(135deg, #bee3f8 0%, #90cdf4 100%);
+            color: #2a4365;
+            border: 1px solid #90cdf4;
+        }
+        
+        .form-description {
+            background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-size: 15px;
+            color: var(--dark);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-right: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-description::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(44, 82, 130, 0.05) 0%, transparent 100%);
+        }
+        
+        .form-description i {
+            color: var(--primary);
+            margin-left: 8px;
+            font-size: 18px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px 20px;
+        }
+        
+        .form-group {
+            flex: 1 0 100%;
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            flex: 1 0 100%;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: 15px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        label i {
+            margin-left: 8px;
+            color: var(--primary);
+            font-size: 16px;
+        }
+        
+        .required {
+            color: var(--secondary);
+            margin-right: 5px;
+            font-weight: 800;
+        }
+        
+        .input-with-icon {
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .input-with-icon:focus-within {
+            transform: translateY(-2px);
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 16px 15px 16px 45px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: white;
+            color: var(--dark);
+            font-weight: 500;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.2);
+            background: white;
+            transform: translateY(-2px);
+        }
+        
+        input:focus + i, select:focus + i, textarea:focus + i {
+            color: var(--secondary);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .file-upload-container {
+            margin-top: 10px;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 20px;
+            border: 2px dashed var(--gray-light);
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .file-upload-label:hover, .file-upload-label:focus {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+        
+        .file-upload-label.drag-over {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            transform: scale(1.02);
+        }
+        
+        .file-upload-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+        
+        .file-upload-label:hover .file-upload-icon,
+        .file-upload-label:focus .file-upload-icon {
+            transform: scale(1.05);
+            color: var(--secondary);
+        }
+        
+        .file-upload-text {
+            font-size: 16px;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .file-upload-hint {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-preview {
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border: 2px solid var(--gray-light);
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+            position: relative;
+        }
+        
+        .file-preview.active {
+            display: block;
+        }
+        
+        .file-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .file-preview-name {
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+        
+        .file-preview-name i {
+            margin-left: 10px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .remove-file {
+            background: linear-gradient(135deg, #fc8181 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: 0 3px 8px rgba(229, 62, 62, 0.3);
+        }
+        
+        .remove-file:hover, .remove-file:focus {
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 5px 12px rgba(229, 62, 62, 0.4);
+            outline: none;
+        }
+        
+        .file-preview-size {
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .file-progress {
+            height: 8px;
+            background-color: var(--gray-light);
+            border-radius: 4px;
+            margin-top: 12px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .file-progress.active {
+            display: block;
+        }
+        
+        .file-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, #68d391 100%);
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.6;
+        }
+        
+        .hint {
+            display: block;
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 6px;
+            font-style: italic;
+            padding-right: 5px;
+        }
+        
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 35px;
+        }
+        
+        .submit-btn, .reset-btn {
+            padding: 16px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before, .reset-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+            transform: translateX(-100%);
+            transition: var(--transition);
+        }
+        
+        .submit-btn:hover::before, .reset-btn:hover::before,
+        .submit-btn:focus::before, .reset-btn:focus::before {
+            transform: translateX(0);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        
+        .submit-btn:hover, .submit-btn:focus {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(44, 82, 130, 0.4);
+            outline: none;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(135deg, var(--gray) 0%, #4a5568 100%);
+            color: white;
+        }
+        
+        .reset-btn:hover, .reset-btn:focus {
+            background: linear-gradient(135deg, #4a5568 0%, var(--gray) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(113, 128, 150, 0.4);
+            outline: none;
+        }
+        
+        .submit-btn i, .reset-btn i {
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        
+        .success-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            border-radius: var(--border-radius-large);
+            padding: 30px 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            text-align: center;
+            max-width: 90%;
+            width: 450px;
+            border: 3px solid var(--success);
+            display: none;
+            opacity: 0;
+            animation: successShow 0.5s forwards;
+        }
+        
+        @keyframes successShow {
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .success-icon {
+            font-size: 60px;
+            color: var(--success);
+            margin-bottom: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-8px); }
+        }
+        
+        .success-message h3 {
+            font-size: 24px;
+            color: #22543d;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+        
+        .success-message p {
+            font-size: 16px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .receipt-info {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: right;
+            border: 2px solid var(--gray-light);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .receipt-info p {
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: var(--dark);
+        }
+        
+        .receipt-info strong {
+            color: var(--primary-dark);
+            margin-left: 5px;
+        }
+        
+        .receipt-id {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        .success-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .success-btn, .download-btn {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            max-width: 180px;
+            min-width: 160px;
+        }
+        
+        .success-btn {
+            background: linear-gradient(135deg, var(--success) 0%, #2f855a 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(56, 161, 105, 0.3);
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(44, 82, 130, 0.3);
+        }
+        
+        .success-btn:hover, .download-btn:hover,
+        .success-btn:focus, .download-btn:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+        
+        .success-btn i, .download-btn i {
+            margin-left: 8px;
+        }
+        
+        .review-receipt {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 400px;
+            background: white;
+            padding: 25px;
+            border: 2px solid var(--primary);
+            text-align: center;
+            z-index: -1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        
+        .review-receipt.visible {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            visibility: visible;
+            z-index: 2000;
+        }
+        
+        .review-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #000;
+        }
+        
+        .review-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+        }
+        
+        .review-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .review-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 5px;
+        }
+        
+        .review-subtitle {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .review-body {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        
+        .review-section {
+            margin-bottom: 15px;
+        }
+        
+        .review-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 5px 0;
+            font-size: 14px;
+        }
+        
+        .review-label {
+            font-weight: bold;
+            color: #000;
+            min-width: 120px;
+            font-size: 14px;
+        }
+        
+        .review-value {
+            color: #333;
+            flex-grow: 1;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .review-date-box {
+            background: #e6f7ff;
+            padding: 15px;
+            border: 2px solid #2c5282;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .review-date-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c5282;
+            margin-bottom: 5px;
+        }
+        
+        .review-date-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .review-footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ccc;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            animation: fadeInOverlay 0.3s forwards;
+        }
+        
+        @keyframes fadeInOverlay {
+            to { opacity: 1; }
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            padding: 15px 20px;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--secondary) 100%);
+        }
+        
+        .footer p {
+            margin-bottom: 10px;
+            opacity: 0.95;
+            font-size: 13px;
+        }
+        
+        /* ========== زر الصورة الشخصية المعدل ========== */
+        .photo-upload-single-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(44, 82, 130, 0.3);
+            margin-top: 10px;
+            position: relative;
+        }
+        
+        .photo-upload-single-btn:hover, .photo-upload-single-btn:focus {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(44, 82, 130, 0.4);
+            outline: none;
+        }
+        
+        .photo-upload-single-btn i {
+            margin-left: 8px;
+            font-size: 18px;
+        }
+        
+        .photo-options-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: white;
+            border-radius: var(--border-radius-large);
+            padding: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            z-index: 1002;
+            text-align: center;
+            max-width: 95%;
+            width: 350px;
+            max-height: 85vh;
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            animation: modalShow 0.5s forwards;
+        }
+        
+        @keyframes modalShow {
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .photo-options-title {
+            font-size: 20px;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .photo-options-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .photo-option-btn {
+            padding: 16px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .photo-option-btn.upload {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        
+        .photo-option-btn.camera {
+            background: linear-gradient(135deg, var(--success) 0%, #2f855a 100%);
+            color: white;
+        }
+        
+        .photo-option-btn.cancel {
+            background: linear-gradient(135deg, var(--gray) 0%, #4a5568 100%);
+            color: white;
+        }
+        
+        .photo-option-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .photo-option-btn i {
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        
+        .passport-sample {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 10px;
+            margin: 15px auto;
+            border: 2px solid var(--gray-light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .unified-card-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--gray-light);
+        }
+        
+        .card-upload-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .card-upload-btn {
+            flex: 1;
+            min-width: 150px;
+            background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
+            color: white;
+            border: none;
+            padding: 14px 15px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(107, 70, 193, 0.3);
+        }
+        
+        .card-upload-btn:hover, .card-upload-btn:focus {
+            background: linear-gradient(135deg, #6b46c1 0%, #805ad5 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(107, 70, 193, 0.4);
+            outline: none;
+        }
+        
+        .card-upload-btn i {
+            margin-left: 8px;
+            font-size: 16px;
+        }
+        
+        .card-preview-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .card-preview {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 10px;
+            border: 2px solid var(--gray-light);
+            display: none;
+        }
+        
+        .card-preview.active {
+            display: block;
+        }
+        
+        .card-preview-title {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 15px;
+        }
+        
+        /* إضافة مؤشر التحميل للبطاقة الموحدة */
+        .card-progress {
+            height: 8px;
+            background-color: var(--gray-light);
+            border-radius: 4px;
+            margin-top: 12px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .card-progress.active {
+            display: block;
+        }
+        
+        .card-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #805ad5 0%, #6b46c1 100%);
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+        }
+        
+        /* تحسين الطباعة */
+        @media print {
+            .official-receipt {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 10mm !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            
+            .official-content {
+                padding: 0 !important;
+            }
+            
+            .official-header {
+                margin-bottom: 20px !important;
+            }
+            
+            .official-main-title {
+                font-size: 20pt !important;
+            }
+            
+            .official-sub-title {
+                font-size: 16pt !important;
+            }
+            
+            .official-info-row {
+                font-size: 11pt !important;
+            }
+            
+            .declaration-text {
+                font-size: 10pt !important;
+            }
+        }
+        
+        /* تحسينات التصميم المتجاوب */
+        @media (max-width: 850px) {
+            .official-receipt {
+                width: 95% !important;
+                min-height: auto !important;
+                padding: 15px !important;
+            }
+            
+            .official-content {
+                padding: 20px !important;
+            }
+            
+            .photo-and-details {
+                flex-direction: column !important;
+            }
+            
+            .official-photo-container {
+                width: 150px !important;
+                height: 180px !important;
+                margin: 0 auto 20px !important;
+            }
+            
+            .official-details {
+                margin-right: 0 !important;
+            }
+            
+            .official-info-label {
+                width: 140px !important;
+            }
+            
+            .card-upload-container {
+                flex-direction: column;
+            }
+            
+            .card-upload-btn {
+                width: 100%;
+            }
+            
+            .card-preview-container {
+                flex-direction: column;
+            }
+            
+            .camera-container {
+                width: 95%;
+            }
+            
+            .camera-frame {
+                width: 200px;
+                height: 250px;
+            }
+            
+            .permission-modal {
+                width: 95%;
+                padding: 20px 15px;
+            }
+            
+            .permission-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .official-receipt {
+                transform: translate(-50%, -50%) scale(0.8) !important;
+            }
+            
+            .official-main-title {
+                font-size: 20px !important;
+            }
+            
+            .official-sub-title {
+                font-size: 16px !important;
+            }
+            
+            .official-info-row {
+                flex-direction: column !important;
+                margin-bottom: 8px !important;
+            }
+            
+            .official-info-label {
+                width: 100% !important;
+                margin-bottom: 2px !important;
+            }
+            
+            .error-modal {
+                width: 95%;
+                padding: 20px 15px;
+            }
+            
+            .error-title {
+                font-size: 18px;
+            }
+            
+            .error-message {
+                font-size: 14px;
+            }
+            
+            .photo-options-modal {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .photo-options-title {
+                font-size: 18px;
+            }
+            
+            .camera-container {
+                width: 98%;
+            }
+            
+            .camera-frame {
+                width: 180px;
+                height: 220px;
+            }
+            
+            .camera-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .camera-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .permission-modal {
+                width: 95%;
+                padding: 15px 10px;
+            }
+            
+            .permission-title {
+                font-size: 18px;
+            }
+            
+            .permission-message {
+                font-size: 14px;
+            }
+        }
+        
+        /* بقية CSS كما هي */
+        @media (min-width: 576px) {
+            .container {
+                margin: 0 auto;
+                max-width: 100%;
+            }
+            
+            .choice-btn {
+                max-width: 220px;
+            }
+            
+            .form-group {
+                flex: 1 0 calc(50% - 20px);
+            }
+            
+            .choices-container {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .choice-card {
+                max-width: 400px;
+            }
+            
+            .button-container {
+                flex-direction: row;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 95%;
+                margin: 20px auto;
+                border-radius: var(--border-radius-large);
+                min-height: auto;
+                box-shadow: var(--shadow-hover);
+            }
+            
+            .header {
+                padding: 30px 25px;
+            }
+            
+            .main-title {
+                font-size: 28px;
+            }
+            
+            .sub-title {
+                font-size: 22px;
+            }
+            
+            .form-title {
+                font-size: 24px;
+            }
+            
+            .choice-screen {
+                padding: 40px 30px;
+            }
+            
+            .choice-title {
+                font-size: 28px;
+            }
+            
+            .choice-description {
+                font-size: 18px;
+            }
+            
+            .choice-card h3 {
+                font-size: 24px;
+            }
+            
+            .choice-card p {
+                font-size: 16px;
+            }
+            
+            .form-container {
+                padding: 30px 25px;
+            }
+            
+            .card-upload-container {
+                flex-direction: row;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .container {
+                max-width: 90%;
+            }
+            
+            .header {
+                padding: 35px 30px;
+            }
+            
+            .logo {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .logo img {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .main-title {
+                font-size: 32px;
+            }
+            
+            .sub-title {
+                font-size: 24px;
+            }
+            
+            .choice-screen {
+                padding: 50px 40px;
+            }
+            
+            .choices-container {
+                flex-direction: row;
+            }
+            
+            .choice-card {
+                max-width: 420px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1100px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .success-message {
+                width: 95%;
+                padding: 25px 15px;
+            }
+            
+            .success-message h3 {
+                font-size: 20px;
+            }
+            
+            .success-message p {
+                font-size: 14px;
+            }
+            
+            .receipt-info {
+                padding: 12px;
+            }
+            
+            .receipt-info p {
+                font-size: 14px;
+            }
+            
+            .receipt-id {
+                font-size: 16px;
+                padding: 8px 12px;
+            }
+            
+            .success-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .success-btn, .download-btn {
+                width: 100%;
+                max-width: 100%;
+                padding: 12px 20px;
+            }
+            
+            .review-receipt {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .main-title {
+                font-size: 22px;
+            }
+            
+            .sub-title {
+                font-size: 17px;
+            }
+            
+            .form-title {
+                font-size: 18px;
+                padding: 8px 15px;
+            }
+            
+            .choice-title {
+                font-size: 22px;
+            }
+            
+            .choice-card {
+                padding: 20px 15px;
+            }
+            
+            .choice-card h3 {
+                font-size: 20px;
+            }
+            
+            .form-container {
+                padding: 20px 15px;
+            }
+            
+            .form-type-indicator {
+                padding: 8px 15px;
+                font-size: 15px;
+            }
+            
+            .back-btn {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- ========== نافذة الخطأ ========== -->
+    <div class="error-modal" id="errorModal">
+        <div class="error-logo">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 class="error-title">يوجد خطأ!</h3>
+        <div class="error-message" id="errorMessage">يرجى تعبئة جميع الحقول المطلوبة</div>
+        <div class="error-field" id="errorField">الحقل المطلوب</div>
+        <button class="error-btn" id="closeErrorBtn">
+            <i class="fas fa-times"></i> إغلاق والمتابعة
+        </button>
+    </div>
+    
+    <!-- ========== نافذة إذن الكاميرا ========== -->
+    <div class="permission-modal" id="permissionModal">
+        <div class="permission-logo">
+            <i class="fas fa-camera"></i>
+        </div>
+        <h3 class="permission-title">الإذن مطلوب للكاميرا</h3>
+        <div class="permission-message" id="permissionMessage">
+            يرجى منح الإذن للوصول إلى الكاميرا لالتقاط صورة شخصية. إذا كنت تستخدم هاتفاً محمولاً، قد تحتاج إلى منح الإذن من إعدادات المتصفح.
+        </div>
+        <div class="permission-buttons">
+            <button class="permission-btn" id="retryPermissionBtn">
+                <i class="fas fa-redo"></i> حاول مرة أخرى
+            </button>
+            <button class="settings-btn" id="openSettingsBtn">
+                <i class="fas fa-cog"></i> فتح الإعدادات
+            </button>
+        </div>
+        <button class="error-btn" id="closePermissionBtn" style="margin-top: 15px;">
+            <i class="fas fa-times"></i> إلغاء
+        </button>
+    </div>
+    
+    <!-- ========== نافذة خيارات الصورة ========== -->
+    <div class="photo-options-modal" id="photoOptionsModal">
+        <div class="photo-options-title">
+            <i class="fas fa-camera"></i> خيارات الصورة الشخصية
+        </div>
+        
+        <img src="https://tse2.mm.bing.net/th/id/OIP.1gjMZkBnST0v1wjs6WLszwHaHa?cb=ucfimg2&ucfimg=1&w=920&h=920&rs=1&pid=ImgDetMain&o=7&rm=3" alt="نموذج صورة جواز السفر" class="passport-sample">
+        
+        <div class="error-message">
+            <i class="fas fa-info-circle"></i> يجب أن تكون الصورة مطابقة لمواصفات جواز السفر
+        </div>
+        
+        <div class="photo-options-buttons">
+            <button class="photo-option-btn upload" id="chooseFromGalleryBtn">
+                <i class="fas fa-images"></i> رفع صورة من المعرض
+            </button>
+            <button class="photo-option-btn camera" id="takePhotoWithCameraBtn">
+                <i class="fas fa-camera"></i> التقاط صورة بالكاميرا
+            </button>
+            <button class="photo-option-btn cancel" id="cancelPhotoOptionsBtn">
+                <i class="fas fa-times"></i> إلغاء
+            </button>
+        </div>
+    </div>
+    
+    <!-- ========== نافذة الكاميرا ========== -->
+    <div class="camera-modal" id="cameraModal">
+        <div class="camera-container">
+            <video id="cameraView" class="camera-view" autoplay playsinline></video>
+            <div class="camera-frame"></div>
+            <div class="camera-instructions">
+                <i class="fas fa-info-circle"></i> ضع وجهك داخل الإطار واجلس بوضعية مستقيمة
+            </div>
+        </div>
+        <div class="camera-buttons">
+            <button class="camera-btn capture-btn" id="capturePhotoBtn">
+                <i class="fas fa-camera"></i> التقاط
+            </button>
+            <button class="camera-btn cancel-camera-btn" id="cancelCameraBtn">
+                <i class="fas fa-times"></i> إلغاء
+            </button>
+        </div>
+    </div>
+    
+    <div class="success-message" id="successMessage">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>تم الإرسال بنجاح!</h3>
+        <p id="successText">تم حجز الموعد والتقديم بنجاح. يمكنك مراجعة نقابات العمال لإكمال المعاملة واستلام طلبك.</p>
+        
+        <div class="receipt-info">
+            <p><strong>تفاصيل الوصل:</strong></p>
+            <p><span id="receiptName">الاسم الرباعي:</span> <strong id="receiptNameValue"></strong></p>
+            <p><span id="receiptPhone">رقم الهاتف:</span> <strong id="receiptPhoneValue"></strong></p>
+            <p><span id="receiptType">نوع الطلب:</span> <strong id="receiptTypeValue"></strong></p>
+            <p><span id="receiptReviewDate">تاريخ المراجعة:</span> <strong id="receiptReviewDateValue"></strong></p>
+            <div class="receipt-id">
+                <span id="receiptIdLabel">رقم الطلب:</span> <strong id="receiptIdValue"></strong>
+            </div>
+        </div>
+        
+        <div class="success-buttons">
+            <button class="download-btn" id="downloadReviewBtn">
+                <i class="fas fa-download"></i> تنزيل وصل المراجعة
+            </button>
+            <button class="success-btn" id="closeSuccessBtn">
+                <i class="fas fa-check"></i> تم
+            </button>
+        </div>
+    </div>
+    
+    <div class="review-receipt" id="reviewReceipt">
+        <div class="review-header">
+            <div class="review-logo">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNX9aZzQhhFn-2gj2MIS8D4mn-5iizM4hgXQ&s" alt="شعار اتحاد نقابات العمال">
+            </div>
+            <h2 class="review-title">اتحاد نقابات العمال في العراق</h2>
+            <p class="review-subtitle">اتحاد نقابات عمال ذي قار</p>
+        </div>
+        
+        <div class="review-body">
+            <div class="review-section">
+                <div class="review-info-row">
+                    <span class="review-label">الاسم الرباعي:</span>
+                    <span class="review-value" id="reviewFullName"></span>
+                </div>
+                
+                <div class="review-info-row">
+                    <span class="review-label">رقم الهاتف:</span>
+                    <span class="review-value" id="reviewPhoneNumber"></span>
+                </div>
+                
+                <div class="review-info-row">
+                    <span class="review-label">رقم الهوية:</span>
+                    <span class="review-value empty-field">.................</span>
+                </div>
+                
+                <div class="review-info-row">
+                    <span class="review-label">نوع الطلب:</span>
+                    <span class="review-value" id="reviewApplicationType"></span>
+                </div>
+                
+                <div class="review-date-box">
+                    <div class="review-date-label">تاريخ المراجعة:</div>
+                    <div class="review-date-value" id="reviewReviewDate"></div>
+                </div>
+                
+                <div class="review-info-row">
+                    <span class="review-label">رقم الطلب:</span>
+                    <span class="review-value" id="reviewReceiptId"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="review-footer">
+            <p>يرجى الحضور في التاريخ المحدد مع المستندات المطلوبة</p>
+            <p>هذا الوصل للاستعراض السريع فقط</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNX9aZzQhhFn-2gj2MIS8D4mn-5iizM4hgXQ&s" alt="شعار اتحاد نقابات العمال">
+                </div>
+                <div class="titles">
+                    <h1 class="main-title">اتحاد نقابات العمال في العراق</h1>
+                    <h2 class="sub-title">اتحاد نقابات عمال ذي قار</h2>
+                    <div class="form-title">
+                        <i class="fas fa-file-signature"></i> استمارة انتساب
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <section class="choice-screen" id="choiceScreen">
+            <h2 class="choice-title"><i class="fas fa-tasks"></i> اختر نوع الطلب</h2>
+            <p class="choice-description">
+                يرجى اختيار نوع الطلب الذي ترغب في تقديمه. إذا كانت هذه أول مرة تقدم فيها طلب انتساب، اختر "إصدار هوية لأول مرة". إذا كنت ترغب في تجديد هويتك الحالية، اختر "تجديد الهوية".
+            </p>
+            
+            <div class="choices-container">
+                <div class="choice-card new">
+                    <div class="choice-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <h3>إصدار هوية لأول مرة</h3>
+                    <p>اختر هذا الخيار إذا كانت هذه أول مرة تقدم فيها طلب انتساب وليس لديك هوية اتحاد سابقة. ستقوم بتعبئة استمارة الانضمام الأساسية.</p>
+                    <button class="choice-btn" id="newChoiceBtn">
+                        <i class="fas fa-arrow-left"></i> اختر هذا الخيار
+                    </button>
+                </div>
+                
+                <div class="choice-card renew">
+                    <div class="choice-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>تجديد الهوية</h3>
+                    <p>اختر هذا الخيار إذا كنت عضوًا مسجلًا مسبقًا وترغب في تجديد هويتك. ستحتاج إلى رفع صورة من هويتك القديمة.</p>
+                    <button class="choice-btn" id="renewChoiceBtn">
+                        <i class="fas fa-arrow-left"></i> اختر هذا الخيار
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <main class="form-container" id="formContainer">
+            <div class="form-navigation">
+                <button class="back-btn" id="backBtn">
+                    <i class="fas fa-arrow-right"></i> العودة لاختيار نوع الطلب
+                </button>
+                
+                <div id="formTypeIndicator" class="form-type-indicator new">
+                    <i class="fas fa-id-card"></i> <span id="formTypeText">إصدار هوية لأول مرة</span>
+                </div>
+            </div>
+            
+            <div class="form-description">
+                <p><i class="fas fa-info-circle"></i> يرجى تعبئة جميع الحقول أدناه بدقة للتقديم بطلب الانتساب إلى اتحاد نقابات عمال ذي قار. جميع الحقول إلزامية ويجب تعبئتها.</p>
+            </div>
+            
+            <form id="membershipForm">
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-user"></i> المعلومات الشخصية</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName"><i class="fas fa-user-circle"></i> الاسم الرباعي <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="fullName" name="fullName" required placeholder="أدخل الاسم الرباعي كاملاً">
+                            </div>
+                            <span class="hint">مثال: علي حسن عبدالله محمد</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="spouseName"><i class="fas fa-heart"></i> اسم الزوج/ة</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-heart"></i>
+                                <input type="text" id="spouseName" name="spouseName" placeholder="أدخل اسم الزوج أو الزوجة">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="birthPlace"><i class="fas fa-map-marker-alt"></i> محل الولادة <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" id="birthPlace" name="birthPlace" required placeholder="المحافظة والمدينة أو القرية">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="residence"><i class="fas fa-home"></i> مكان السكن الحالي <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-home"></i>
+                                <input type="text" id="residence" name="residence" required placeholder="العنوان التفصيلي الحالي">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phoneNumber"><i class="fas fa-phone"></i> رقم الهاتف <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-phone"></i>
+                                <input type="tel" id="phoneNumber" name="phoneNumber" required placeholder="07XX-XXX-XXXX">
+                            </div>
+                            <span class="hint">يجب أن يبدأ بـ 07XX ويحتوي على 10 أرقام على الأقل</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="personalPhoto"><i class="fas fa-camera"></i> الصورة الشخصية <span class="required">*</span></label>
+                        
+                        <!-- زر واحد للصورة الشخصية -->
+                        <button type="button" class="photo-upload-single-btn" id="photoUploadSingleBtn">
+                            <i class="fas fa-plus-circle"></i> إضافة صورة شخصية
+                        </button>
+                        
+                        <input type="file" id="personalPhoto" name="personalPhoto" class="file-input" accept=".jpg,.jpeg,.png,image/*" style="display: none;">
+                        <input type="hidden" id="cameraPhoto" name="cameraPhoto">
+                        <span class="hint">مطلوبة لجميع الطلبات - يجب أن تكون بصيغة JPG أو PNG وبحد أقصى 5MB</span>
+                        
+                        <div class="file-preview" id="photoPreview">
+                            <div class="file-preview-header">
+                                <div class="file-preview-name">
+                                    <i class="fas fa-image"></i> <span id="photoFileName">اسم الملف</span>
+                                </div>
+                                <button type="button" class="remove-file" id="removePhotoBtn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="file-preview-size" id="photoFileSize">0 KB</div>
+                            <div class="file-progress" id="photoProgress">
+                                <div class="file-progress-bar" id="photoProgressBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم البطاقة الموحدة - يظهر في كلا النوعين -->
+                <div class="form-section unified-card-section">
+                    <h3 class="section-title"><i class="fas fa-address-card"></i> البطاقة الموحدة <span class="required">*</span></h3>
+                    
+                    <div class="form-group full-width">
+                        <p>يرجى رفع صورة واضحة للبطاقة الموحدة (الوجه والظهر)</p>
+                        
+                        <div class="card-upload-container">
+                            <button type="button" class="card-upload-btn" id="cardFrontBtn">
+                                <i class="fas fa-id-card"></i> رفع الوجه الأمامي
+                            </button>
+                            <button type="button" class="card-upload-btn" id="cardBackBtn">
+                                <i class="fas fa-id-card"></i> رفع الوجه الخلفي
+                            </button>
+                        </div>
+                        
+                        <input type="file" id="cardFrontUpload" name="cardFrontUpload" class="file-input" accept=".jpg,.jpeg,.png,image/*" style="display: none;">
+                        <input type="file" id="cardBackUpload" name="cardBackUpload" class="file-input" accept=".jpg,.jpeg,.png,image/*" style="display: none;">
+                        
+                        <div class="card-preview-container">
+                            <div class="card-preview" id="cardFrontPreview">
+                                <div class="card-preview-title">الوجه الأمامي</div>
+                                <div class="file-preview-header">
+                                    <div class="file-preview-name">
+                                        <i class="fas fa-image"></i> <span id="cardFrontFileName">لم يتم رفع ملف</span>
+                                    </div>
+                                    <button type="button" class="remove-file" id="removeCardFrontBtn">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="file-preview-size" id="cardFrontFileSize">0 KB</div>
+                                <div class="card-progress" id="cardFrontProgress">
+                                    <div class="card-progress-bar" id="cardFrontProgressBar"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-preview" id="cardBackPreview">
+                                <div class="card-preview-title">الوجه الخلفي</div>
+                                <div class="file-preview-header">
+                                    <div class="file-preview-name">
+                                        <i class="fas fa-image"></i> <span id="cardBackFileName">لم يتم رفع ملف</span>
+                                    </div>
+                                    <button type="button" class="remove-file" id="removeCardBackBtn">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="file-preview-size" id="cardBackFileSize">0 KB</div>
+                                <div class="card-progress" id="cardBackProgress">
+                                    <div class="card-progress-bar" id="cardBackProgressBar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <span class="hint">يجب رفع صور واضحة للوجهين الأمامي والخلفي للبطاقة الموحدة. الحد الأقصى لكل صورة: 5MB</span>
+                    </div>
+                </div>
+                
+                <div class="form-section" id="oldIdSection" style="display: none;">
+                    <h3 class="section-title"><i class="fas fa-file-upload"></i> رفع الهوية القديمة</h3>
+                    
+                    <div class="form-group full-width">
+                        <label for="oldIdUpload"><i class="fas fa-upload"></i> ارفاق صورة الهوية القديمة <span class="required">*</span></label>
+                        <div class="file-upload-container">
+                            <label for="oldIdUpload" class="file-upload-label" id="fileUploadLabel">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="file-upload-text">
+                                    انقر لرفع الملف أو اسحبه وأفلته هنا
+                                </div>
+                                <div class="file-upload-hint">
+                                    الملفات المسموحة: JPG, PNG, PDF. الحد الأقصى: 5MB
+                                </div>
+                                <input type="file" id="oldIdUpload" name="oldIdUpload" class="file-input" accept=".jpg,.jpeg,.png,.pdf">
+                            </label>
+                            
+                            <div class="file-preview" id="filePreview">
+                                <div class="file-preview-header">
+                                    <div class="file-preview-name">
+                                        <i class="fas fa-file"></i> <span id="fileName">اسم الملف</span>
+                                    </div>
+                                    <button type="button" class="remove-file" id="removeFileBtn">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="file-preview-size" id="fileSize">0 KB</div>
+                                <div class="file-progress" id="fileProgress">
+                                    <div class="file-progress-bar" id="fileProgressBar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="hint">يجب رفع صورة واضحة للهوية القديمة حتى نتمكن من تجديدها</span>
+                    </div>
+                </div>
+                
+                <div class="button-container">
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> إرسال طلب الانتساب
+                    </button>
+                    <button type="button" class="reset-btn" id="resetBtn">
+                        <i class="fas fa-redo"></i> مسح النموذج
+                    </button>
+                </div>
+            </form>
+        </main>
+        
+        <footer class="footer">
+            <p>© 2026 اتحاد نقابات العمال في العراق - اتحاد نقابات عمال ذي قار. جميع الحقوق محفوظة.</p>
+        </footer>
+    </div>
+
+    <script>
+        // ========== تعريف المتغيرات العامة ==========
+        let applicationType = '';
+        let currentReceiptId = '';
+        let currentFullName = '';
+        let currentPhoneNumber = '';
+        let currentSpouseName = '';
+        let currentBirthPlace = '';
+        let currentResidence = '';
+        let personalPhotoFile = null;
+        let cardFrontFile = null;
+        let cardBackFile = null;
+        let oldIdFile = null;
+        let reviewDate = '';
+        let issueDate = '';
+        let cameraStream = null;
+        let permissionDenied = false;
+        
+        // ========== ✅ تهيئة Supabase ==========
+        let supabaseClient = null;
+
+        async function initializeSupabase() {
+            try {
+                const SUPABASE_URL = 'https://gjmrohuesytjtnlvgilo.supabase.co';
+                const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqbXJvaHVlc3l0anRubHZnaWxvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3MjMzOTEsImV4cCI6MjA4MTI5OTM5MX0.d-NOaVwweXllD0TokSUG5bGskHR9PYjsVSStfnxbjC8';
+                
+                console.log('🔄 جاري تهيئة Supabase...');
+                
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                
+                const { data, error } = await supabaseClient
+                    .from('membership_applications')
+                    .select('count', { count: 'exact', head: true });
+                
+                if (error) {
+                    console.warn('⚠️ ملاحظة:', error.message);
+                    console.log('📝 سيتم العمل في وضع المحاكاة لحين حل المشكلة');
+                    return false;
+                } else {
+                    console.log('✅ Supabase متصل وجاهز للاستخدام!');
+                    return true;
+                }
+                
+            } catch (error) {
+                console.error('❌ خطأ في التهيئة:', error);
+                console.warn('⚠️ التطبيق يعمل في وضع المحاكاة');
+                return false;
+            }
+        }
+
+        // استدعاء التهيئة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', initializeSupabase);
+        
+        // ========== الدوال الأساسية ==========
+        
+        // توليد رقم طلب عشوائي مكون من 4 أرقام
+        function generateReceiptId() {
+            return Math.floor(1000 + Math.random() * 9000).toString();
+        }
+        
+        // حساب تاريخ المراجعة
+        function calculateReviewDate() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            let dayOfWeek = tomorrow.getDay();
+            
+            if (dayOfWeek === 5) {
+                tomorrow.setDate(tomorrow.getDate() + 2);
+            } else if (dayOfWeek === 6) {
+                tomorrow.setDate(tomorrow.getDate() + 1);
+            }
+            
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            
+            return tomorrow.toLocaleDateString('ar-EG', options);
+        }
+        
+        // الحصول على تاريخ الإصدار
+        function getIssueDate() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            return now.toLocaleDateString('ar-EG', options);
+        }
+        
+        // تحويل الملف إلى Base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    resolve(e.target.result);
+                };
+                reader.onerror = function(error) {
+                    reject(error);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        // ========== دوال نافذة الخطأ ==========
+        function showError(message, fieldName = '') {
+            document.getElementById('errorMessage').textContent = message;
+            
+            if (fieldName) {
+                document.getElementById('errorField').textContent = fieldName;
+                document.getElementById('errorField').style.display = 'block';
+            } else {
+                document.getElementById('errorField').style.display = 'none';
+            }
+            
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('errorModal').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('overlay').style.opacity = '1';
+                document.getElementById('errorModal').style.opacity = '1';
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+            
+            // التمرير للحقل المطلوب
+            if (fieldName) {
+                const fieldMap = {
+                    'الاسم الرباعي': 'fullName',
+                    'محل الولادة': 'birthPlace',
+                    'مكان السكن الحالي': 'residence',
+                    'رقم الهاتف': 'phoneNumber',
+                    'الصورة الشخصية': 'personalPhoto',
+                    'الوجه الأمامي للبطاقة الموحدة': 'cardFrontUpload',
+                    'الوجه الخلفي للبطاقة الموحدة': 'cardBackUpload',
+                    'صورة الهوية القديمة': 'oldIdUpload'
+                };
+                
+                if (fieldMap[fieldName]) {
+                    const field = document.getElementById(fieldMap[fieldName]);
+                    if (field) {
+                        field.focus();
+                        field.style.borderColor = 'var(--secondary)';
+                        field.style.boxShadow = '0 0 0 3px rgba(229, 62, 62, 0.2)';
+                    }
+                }
+            }
+        }
+        
+        function closeError() {
+            document.getElementById('overlay').style.opacity = '0';
+            document.getElementById('errorModal').style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('errorModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+        
+        // ========== دوال نافذة إذن الكاميرا ==========
+        function showPermissionModal(errorMessage = '') {
+            const message = errorMessage || 
+                'يرجى منح الإذن للوصول إلى الكاميرا لالتقاط صورة شخصية. إذا كنت تستخدم هاتفاً محمولاً، قد تحتاج إلى منح الإذن من إعدادات المتصفح.';
+            
+            document.getElementById('permissionMessage').textContent = message;
+            
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('permissionModal').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('overlay').style.opacity = '1';
+                document.getElementById('permissionModal').style.opacity = '1';
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+            permissionDenied = true;
+        }
+        
+        function closePermissionModal() {
+            document.getElementById('overlay').style.opacity = '0';
+            document.getElementById('permissionModal').style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('permissionModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+        
+        function openSettings() {
+            // محاولة فتح إعدادات التطبيق في المتصفح
+            if (navigator.userAgent.match(/Android/i)) {
+                // لهواتف الأندرويد
+                window.open('intent://settings/#Intent;scheme=android-app;package=com.android.settings;end;');
+            } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+                // لهواتف iOS - لا يمكن فتح الإعدادات مباشرة
+                alert('يرجى الذهاب إلى إعدادات الهاتف > خصوصية > الكاميرا ومنح الإذن لهذا التطبيق.');
+            } else {
+                // لأجهزة الكمبيوتر
+                alert('يرجى التحقق من إعدادات الكاميرا في المتصفح والنقر على أيقونة الكاميرا في شريط العنوان.');
+            }
+            
+            closePermissionModal();
+        }
+        
+        async function retryPermission() {
+            closePermissionModal();
+            await startCameraWithPermissionCheck();
+        }
+        
+        // ========== دوال الصورة الشخصية ==========
+        function openPhotoOptions() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('photoOptionsModal').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('overlay').style.opacity = '1';
+                document.getElementById('photoOptionsModal').style.opacity = '1';
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closePhotoOptions() {
+            document.getElementById('overlay').style.opacity = '0';
+            document.getElementById('photoOptionsModal').style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('photoOptionsModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+        
+        // ========== دوال الكاميرا المحسنة ==========
+        async function openCamera() {
+            // إغلاق نافذة خيارات الصورة أولاً
+            closePhotoOptions();
+            
+            // التحقق من الإذن أولاً
+            const hasPermission = await startCameraWithPermissionCheck();
+            
+            if (!hasPermission) {
+                return;
+            }
+            
+            // فتح نافذة الكاميرا
+            document.getElementById('cameraModal').classList.add('visible');
+            document.getElementById('cameraModal').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('cameraModal').style.opacity = '1';
+            }, 10);
+        }
+        
+        async function startCameraWithPermissionCheck() {
+            try {
+                // أولاً: التحقق مما إذا كان المتصفح يدعم الكاميرا
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    showPermissionModal('المتصفح لا يدعم الوصول إلى الكاميرا. يرجى استخدام متصفح حديث مثل Chrome أو Firefox.');
+                    return false;
+                }
+                
+                // التحقق من الإذن الحالي
+                const permissions = await navigator.permissions.query({ name: 'camera' });
+                
+                if (permissions.state === 'denied') {
+                    showPermissionModal('تم رفض الإذن للوصول إلى الكاميرا. يرجى منح الإذن في إعدادات المتصفح.');
+                    return false;
+                }
+                
+                // محاولة تشغيل الكاميرا
+                return await startCamera();
+                
+            } catch (error) {
+                console.error('❌ خطأ في التحقق من الإذن:', error);
+                // إذا فشل التحقق، نعاود المحاولة بدون التحقق
+                return await startCamera();
+            }
+        }
+        
+        async function startCamera() {
+            try {
+                const videoElement = document.getElementById('cameraView');
+                
+                // إيقاف أي كاميرا قيد التشغيل
+                if (cameraStream) {
+                    stopCamera();
+                }
+                
+                // طلب إذن الوصول للكاميرا
+                cameraStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'user', // استخدام الكاميرا الأمامية
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false 
+                });
+                
+                videoElement.srcObject = cameraStream;
+                videoElement.play();
+                
+                console.log('✅ الكاميرا تعمل بنجاح');
+                permissionDenied = false;
+                return true;
+                
+            } catch (error) {
+                console.error('❌ خطأ في تشغيل الكاميرا:', error);
+                
+                let errorMessage = 'حدث خطأ في تشغيل الكاميرا';
+                let permissionError = false;
+                
+                if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                    errorMessage = 'تم رفض الإذن للوصول إلى الكاميرا. يرجى منح الإذن في إعدادات المتصفح.';
+                    permissionError = true;
+                } else if (error.name === 'NotFoundError' || error.name === 'DevicesNotFoundError') {
+                    errorMessage = 'لم يتم العثور على كاميرا في الجهاز.';
+                } else if (error.name === 'NotReadableError' || error.name === 'TrackStartError') {
+                    errorMessage = 'لا يمكن قراءة الكاميرا. قد تكون قيد الاستخدام من قبل تطبيق آخر.';
+                } else if (error.name === 'OverconstrainedError' || error.name === 'ConstraintNotSatisfiedError') {
+                    errorMessage = 'لا يمكن تشغيل الكاميرا مع المواصفات المطلوبة.';
+                } else if (error.name === 'SecurityError') {
+                    errorMessage = 'التطبيق يعمل في بيئة غير آمنة. يرجى استخدام HTTPS.';
+                }
+                
+                if (permissionError) {
+                    showPermissionModal(errorMessage);
+                } else {
+                    showError(errorMessage, 'الكاميرا');
+                }
+                
+                closeCamera();
+                return false;
+            }
+        }
+        
+        function closeCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                cameraStream = null;
+            }
+            
+            document.getElementById('cameraModal').style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('cameraModal').classList.remove('visible');
+                document.getElementById('cameraModal').style.display = 'none';
+            }, 300);
+        }
+        
+        function capturePhoto() {
+            const video = document.getElementById('cameraView');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // ضبط أبعاد الكانفس
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // رسم الصورة من الفيديو مع عكسها لتصحيح المرآة
+            context.translate(canvas.width, 0);
+            context.scale(-1, 1);
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // إرجاع الصورة إلى وضعها الطبيعي
+            context.setTransform(1, 0, 0, 1, 0, 0);
+            
+            // تحويل الصورة إلى ملف
+            canvas.toBlob(function(blob) {
+                const fileName = `photo_${Date.now()}.jpg`;
+                const file = new File([blob], fileName, { 
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                });
+                
+                handlePhotoFile(file);
+                
+                // إيقاف الكاميرا وإغلاق النافذة
+                closeCamera();
+                
+            }, 'image/jpeg', 0.95); // جودة 95%
+        }
+        
+        function handlePhotoFile(file) {
+            const maxSize = 5 * 1024 * 1024;
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            
+            if (!allowedTypes.includes(file.type)) {
+                showError('نوع الصورة غير مدعوم. الرجاء رفع صورة بصيغة JPG أو PNG', 'الصورة الشخصية');
+                return;
+            }
+            
+            if (file.size > maxSize) {
+                showError('حجم الصورة كبير جداً. الحد الأقصى هو 5MB', 'الصورة الشخصية');
+                return;
+            }
+            
+            personalPhotoFile = file;
+            
+            document.getElementById('photoFileName').textContent = file.name;
+            document.getElementById('photoFileSize').textContent = formatFileSize(file.size);
+            document.getElementById('photoPreview').classList.add('active');
+            
+            simulateUpload('photoProgress', 'photoProgressBar');
+            
+            // عرض رسالة نجاح
+            setTimeout(() => {
+                showSuccessNotification('تم التقاط الصورة بنجاح!');
+            }, 600);
+        }
+        
+        function showSuccessNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, var(--success) 0%, #2f855a 100%);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(56, 161, 105, 0.3);
+                z-index: 10000;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideDown 0.3s ease-out;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+            
+            // إضافة أنماط للحركة
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideDown {
+                    from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+                }
+                @keyframes slideUp {
+                    from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                    to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        function simulateUpload(progressId, progressBarId) {
+            const progress = document.getElementById(progressId);
+            const progressBar = document.getElementById(progressBarId);
+            
+            progress.classList.add('active');
+            progressBar.style.width = '0%';
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                width += 5;
+                progressBar.style.width = width + '%';
+                
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progress.classList.remove('active');
+                    }, 500);
+                }
+            }, 50);
+        }
+        
+        // ========== دوال البطاقة الموحدة ==========
+        function handleCardFrontFile(file) {
+            const maxSize = 5 * 1024 * 1024;
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            
+            if (!allowedTypes.includes(file.type)) {
+                showError('نوع الصورة غير مدعوم. الرجاء رفع صورة بصيغة JPG أو PNG', 'الوجه الأمامي للبطاقة الموحدة');
+                return;
+            }
+            
+            if (file.size > maxSize) {
+                showError('حجم صورة الوجه الأمامي كبير جداً. الحد الأقصى هو 5MB', 'الوجه الأمامي للبطاقة الموحدة');
+                return;
+            }
+            
+            cardFrontFile = file;
+            document.getElementById('cardFrontFileName').textContent = file.name;
+            document.getElementById('cardFrontFileSize').textContent = formatFileSize(file.size);
+            document.getElementById('cardFrontPreview').classList.add('active');
+            
+            simulateUpload('cardFrontProgress', 'cardFrontProgressBar');
+        }
+        
+        function handleCardBackFile(file) {
+            const maxSize = 5 * 1024 * 1024;
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            
+            if (!allowedTypes.includes(file.type)) {
+                showError('نوع الصورة غير مدعوم. الرجاء رفع صورة بصيغة JPG أو PNG', 'الوجه الخلفي للبطاقة الموحدة');
+                return;
+            }
+            
+            if (file.size > maxSize) {
+                showError('حجم صورة الوجه الخلفي كبير جداً. الحد الأقصى هو 5MB', 'الوجه الخلفي للبطاقة الموحدة');
+                return;
+            }
+            
+            cardBackFile = file;
+            document.getElementById('cardBackFileName').textContent = file.name;
+            document.getElementById('cardBackFileSize').textContent = formatFileSize(file.size);
+            document.getElementById('cardBackPreview').classList.add('active');
+            
+            simulateUpload('cardBackProgress', 'cardBackProgressBar');
+        }
+        
+        // اختيار نوع الطلب
+        function selectChoice(choice) {
+            applicationType = choice;
+            
+            const formTypeText = document.getElementById('formTypeText');
+            const formTypeIndicator = document.getElementById('formTypeIndicator');
+            
+            if (applicationType === 'new') {
+                formTypeText.textContent = 'إصدار هوية لأول مرة';
+                formTypeIndicator.className = 'form-type-indicator new';
+                document.getElementById('oldIdSection').style.display = 'none';
+            } else if (applicationType === 'renew') {
+                formTypeText.textContent = 'تجديد الهوية';
+                formTypeIndicator.className = 'form-type-indicator renew';
+                document.getElementById('oldIdSection').style.display = 'block';
+            }
+            
+            document.getElementById('choiceScreen').style.display = 'none';
+            document.getElementById('formContainer').style.display = 'block';
+            
+            window.scrollTo(0, 0);
+        }
+        
+        // زر العودة لشاشة الاختيار
+        function goBackToChoice() {
+            document.getElementById('choiceScreen').style.display = 'block';
+            document.getElementById('formContainer').style.display = 'none';
+            
+            document.getElementById('membershipForm').reset();
+            resetFileUpload();
+            resetPhotoUpload();
+            resetCardUpload();
+            
+            window.scrollTo(0, 0);
+        }
+        
+        // زر مسح النموذج
+        function resetForm() {
+            document.getElementById('membershipForm').reset();
+            resetFileUpload();
+            resetPhotoUpload();
+            resetCardUpload();
+            
+            const requiredFields = document.querySelectorAll('input[required], select[required]');
+            requiredFields.forEach(field => {
+                field.style.borderColor = 'var(--gray-light)';
+            });
+            
+            applicationType = '';
+            currentReceiptId = '';
+            currentFullName = '';
+            currentPhoneNumber = '';
+            currentSpouseName = '';
+            currentBirthPlace = '';
+            currentResidence = '';
+            personalPhotoFile = null;
+            cardFrontFile = null;
+            cardBackFile = null;
+            oldIdFile = null;
+            
+            alert('تم مسح النموذج بنجاح');
+        }
+        
+        // ✅ دالة محسنة لحفظ البيانات في Supabase
+        async function saveToSupabase(applicationData) {
+            if (!supabaseClient) {
+                const initialized = await initializeSupabase();
+                if (!initialized) {
+                    console.log('📝 وضع المحاكاة: بيانات النموذج', applicationData);
+                    return { id: 'simulated_' + Date.now(), success: true };
+                }
+            }
+            
+            try {
+                console.log('💾 جاري حفظ البيانات في Supabase...');
+                
+                let personalPhotoBase64 = null;
+                let cardFrontBase64 = null;
+                let cardBackBase64 = null;
+                let oldIdBase64 = null;
+                
+                if (applicationData.personalPhotoFile) {
+                    try {
+                        personalPhotoBase64 = await fileToBase64(applicationData.personalPhotoFile);
+                        console.log('✅ تم تحويل الصورة الشخصية إلى Base64');
+                    } catch (error) {
+                        console.error('❌ خطأ في تحويل الصورة الشخصية:', error);
+                    }
+                }
+                
+                if (applicationData.cardFrontFile) {
+                    try {
+                        cardFrontBase64 = await fileToBase64(applicationData.cardFrontFile);
+                        console.log('✅ تم تحويل وجه البطاقة إلى Base64');
+                    } catch (error) {
+                        console.error('❌ خطأ في تحويل وجه البطاقة:', error);
+                    }
+                }
+                
+                if (applicationData.cardBackFile) {
+                    try {
+                        cardBackBase64 = await fileToBase64(applicationData.cardBackFile);
+                        console.log('✅ تم تحويل ظهر البطاقة إلى Base64');
+                    } catch (error) {
+                        console.error('❌ خطأ في تحويل ظهر البطاقة:', error);
+                    }
+                }
+                
+                if (applicationData.oldIdFile) {
+                    try {
+                        oldIdBase64 = await fileToBase64(applicationData.oldIdFile);
+                        console.log('✅ تم تحويل صورة الهوية إلى Base64');
+                    } catch (error) {
+                        console.error('❌ خطأ في تحويل صورة الهوية:', error);
+                    }
+                }
+                
+                const dataToSave = {
+                    receipt_id: applicationData.receiptId,
+                    full_name: applicationData.fullName,
+                    phone_number: applicationData.phoneNumber,
+                    spouse_name: applicationData.spouseName || null,
+                    birth_place: applicationData.birthPlace,
+                    residence: applicationData.residence,
+                    application_type: applicationData.applicationType,
+                    review_date: applicationData.reviewDate,
+                    issue_date: applicationData.issueDate,
+                    status: 'pending',
+                    has_personal_photo: !!applicationData.personalPhotoFile,
+                    personal_photo_base64: personalPhotoBase64,
+                    personal_photo_name: applicationData.personalPhotoFile ? applicationData.personalPhotoFile.name : null,
+                    has_card_front: !!applicationData.cardFrontFile,
+                    card_front_base64: cardFrontBase64,
+                    card_front_name: applicationData.cardFrontFile ? applicationData.cardFrontFile.name : null,
+                    has_card_back: !!applicationData.cardBackFile,
+                    card_back_base64: cardBackBase64,
+                    card_back_name: applicationData.cardBackFile ? applicationData.cardBackFile.name : null,
+                    has_old_id_file: !!applicationData.oldIdFile,
+                    old_id_base64: oldIdBase64,
+                    old_id_name: applicationData.oldIdFile ? applicationData.oldIdFile.name : null,
+                    user_agent: navigator.userAgent,
+                    screen_resolution: `${window.screen.width}x${window.screen.height}`,
+                    language: navigator.language,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                };
+                
+                const { data, error } = await supabaseClient
+                    .from('membership_applications')
+                    .insert([dataToSave])
+                    .select();
+                
+                if (error) {
+                    console.error('❌ خطأ في الحفظ:', error);
+                    
+                    const simpleData = {
+                        receipt_id: applicationData.receiptId,
+                        full_name: applicationData.fullName,
+                        phone_number: applicationData.phoneNumber,
+                        application_type: applicationData.applicationType,
+                        status: 'pending',
+                        has_personal_photo: !!applicationData.personalPhotoFile,
+                        has_card_front: !!applicationData.cardFrontFile,
+                        has_card_back: !!applicationData.cardBackFile,
+                        has_old_id_file: !!applicationData.oldIdFile,
+                        created_at: new Date().toISOString()
+                    };
+                    
+                    const { data: retryData, error: retryError } = await supabaseClient
+                        .from('membership_applications')
+                        .insert([simpleData])
+                        .select();
+                        
+                    if (retryError) {
+                        throw new Error('فشل الحفظ بعد محاولتين: ' + retryError.message);
+                    }
+                    
+                    console.log('✅ تم الحفظ بنسخة مبسطة! ID:', retryData[0].id);
+                    return { id: retryData[0].id, success: true };
+                }
+                
+                console.log('✅ تم الحفظ بنجاح! ID:', data[0].id);
+                return { id: data[0].id, success: true };
+                
+            } catch (error) {
+                console.error('❌ خطأ في حفظ البيانات:', error);
+                throw new Error('فشل حفظ البيانات في قاعدة البيانات');
+            }
+        }
+        
+        // ✅ التحقق من صحة النموذج قبل الإرسال
+        async function submitForm(event) {
+            event.preventDefault();
+            
+            let isValid = true;
+            const requiredFields = document.querySelectorAll('input[required], select[required]');
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = 'var(--secondary)';
+                    field.style.boxShadow = '0 0 0 3px rgba(229, 62, 62, 0.2)';
+                    isValid = false;
+                    
+                    const fieldName = field.previousElementSibling ? 
+                        field.previousElementSibling.querySelector('label')?.textContent?.replace('*', '').trim() : '';
+                    
+                    if (!isValid && fieldName) {
+                        showError('يرجى تعبئة الحقل المطلوب', fieldName);
+                        return false;
+                    }
+                } else {
+                    field.style.borderColor = 'var(--primary)';
+                    field.style.boxShadow = '0 0 0 3px rgba(44, 82, 130, 0.2)';
+                }
+            });
+            
+            if (!isValid) return;
+            
+            // التحقق من صحة رقم الهاتف
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const phonePattern = /^07\d{8,}$/;
+            
+            if (!phonePattern.test(phoneNumber)) {
+                showError('يرجى إدخال رقم هاتف صحيح يبدأ بـ 07XX ويحتوي على 10 أرقام على الأقل', 'رقم الهاتف');
+                return;
+            }
+            
+            // التحقق من وجود صورة شخصية
+            if (!personalPhotoFile) {
+                showError('يرجى رفع صورة شخصية للمتابعة في طلب الانتساب', 'الصورة الشخصية');
+                return;
+            }
+            
+            // التحقق من وجود صور البطاقة الموحدة
+            if (!cardFrontFile || !cardBackFile) {
+                if (!cardFrontFile) {
+                    showError('يرجى رفع صورة الوجه الأمامي للبطاقة الموحدة', 'الوجه الأمامي للبطاقة الموحدة');
+                } else {
+                    showError('يرجى رفع صورة الوجه الخلفي للبطاقة الموحدة', 'الوجه الخلفي للبطاقة الموحدة');
+                }
+                return;
+            }
+            
+            // التحقق من وجود ملف مرفوع في حالة التجديد
+            if (applicationType === 'renew' && !oldIdFile) {
+                showError('يرجى رفع صورة الهوية القديمة للمتابعة في طلب التجديد', 'صورة الهوية القديمة');
+                return;
+            }
+            
+            // حفظ البيانات في المتغيرات
+            currentFullName = document.getElementById('fullName').value;
+            currentPhoneNumber = document.getElementById('phoneNumber').value;
+            currentSpouseName = document.getElementById('spouseName').value || '';
+            currentBirthPlace = document.getElementById('birthPlace').value;
+            currentResidence = document.getElementById('residence').value;
+            currentReceiptId = generateReceiptId();
+            reviewDate = calculateReviewDate();
+            issueDate = getIssueDate();
+            
+            try {
+                const submitBtn = document.getElementById('submitBtn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+                submitBtn.disabled = true;
+                
+                const applicationData = {
+                    receiptId: currentReceiptId,
+                    fullName: currentFullName,
+                    phoneNumber: currentPhoneNumber,
+                    spouseName: currentSpouseName,
+                    birthPlace: currentBirthPlace,
+                    residence: currentResidence,
+                    applicationType: applicationType === 'new' ? 'new' : 'renew',
+                    reviewDate: reviewDate,
+                    issueDate: issueDate,
+                    personalPhotoFile: personalPhotoFile,
+                    cardFrontFile: cardFrontFile,
+                    cardBackFile: cardBackFile,
+                    oldIdFile: oldIdFile
+                };
+                
+                const saveResult = await saveToSupabase(applicationData);
+                
+                if (saveResult.success) {
+                    showSuccessMessage();
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
+                
+                console.log('✅ تم حفظ البيانات والصور بنجاح في قاعدة البيانات!');
+                
+            } catch (error) {
+                console.error('❌ خطأ في حفظ البيانات:', error);
+                
+                if (error.message.includes('Supabase')) {
+                    showError('حدث خطأ في الاتصال بقاعدة البيانات. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.');
+                } else if (error.message.includes('رفع')) {
+                    showError('حدث خطأ في رفع الصورة. يرجى المحاولة مرة أخرى أو اختيار صورة أخرى.');
+                } else {
+                    showError('حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.');
+                }
+                
+            } finally {
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال طلب الانتساب';
+                submitBtn.disabled = false;
+            }
+        }
+        
+        // ========== دوال النافذة المنبثقة والوصلات ==========
+        
+        function showSuccessMessage() {
+            document.getElementById('receiptNameValue').textContent = currentFullName;
+            document.getElementById('receiptPhoneValue').textContent = currentPhoneNumber;
+            document.getElementById('receiptTypeValue').textContent = applicationType === 'new' ? 'إصدار هوية لأول مرة' : 'تجديد الهوية';
+            document.getElementById('receiptIdValue').textContent = currentReceiptId;
+            document.getElementById('receiptReviewDateValue').textContent = reviewDate;
+            
+            const successText = document.getElementById('successText');
+            const message = applicationType === 'new' 
+                ? 'تم حجز الموعد والتقديم بنجاح. يمكنك مراجعة نقابات العمال لإكمال المعاملة واستلام طلبك.' 
+                : 'تم تقديم طلب تجديد الهوية بنجاح. يمكنك مراجعة نقابات العمال لإكمال المعاملة واستلام طلبك.';
+            
+            successText.textContent = message;
+            
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('overlay').style.opacity = '1';
+                document.getElementById('successMessage').style.opacity = '1';
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeSuccessMessage() {
+            document.getElementById('overlay').style.opacity = '0';
+            document.getElementById('successMessage').style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'none';
+                
+                document.getElementById('membershipForm').reset();
+                resetFileUpload();
+                resetPhotoUpload();
+                resetCardUpload();
+                
+                document.getElementById('choiceScreen').style.display = 'block';
+                document.getElementById('formContainer').style.display = 'none';
+                
+                document.body.style.overflow = 'auto';
+                
+                window.scrollTo(0, 0);
+            }, 300);
+        }
+        
+        function downloadReviewReceipt() {
+            prepareReviewReceipt();
+            
+            setTimeout(() => {
+                captureReceiptAsImage('reviewReceipt', `وصل_مراجعة_${currentReceiptId}.png`);
+            }, 300);
+        }
+        
+        function prepareReviewReceipt() {
+            document.getElementById('reviewFullName').textContent = currentFullName;
+            document.getElementById('reviewPhoneNumber').textContent = currentPhoneNumber;
+            document.getElementById('reviewApplicationType').textContent = applicationType === 'new' ? 'إصدار هوية لأول مرة' : 'تجديد الهوية';
+            document.getElementById('reviewReviewDate').textContent = reviewDate;
+            document.getElementById('reviewReceiptId').textContent = currentReceiptId;
+            
+            document.getElementById('reviewReceipt').classList.add('visible');
+            
+            const downloadBtn = document.getElementById('downloadReviewBtn');
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
+            downloadBtn.disabled = true;
+            
+            document.getElementById('successMessage').style.opacity = '0';
+        }
+        
+        function captureReceiptAsImage(elementId, fileName) {
+            const receiptElement = document.getElementById(elementId);
+            
+            const downloadBtn = document.getElementById('downloadReviewBtn');
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
+            downloadBtn.disabled = true;
+            
+            setTimeout(() => {
+                const options = {
+                    scale: 1.5,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    logging: false,
+                    allowTaint: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    width: receiptElement.offsetWidth,
+                    height: receiptElement.offsetHeight,
+                    x: 0,
+                    y: 0,
+                    imageTimeout: 15000,
+                    onclone: function(clonedDoc) {
+                        const clonedElement = clonedDoc.getElementById(elementId);
+                        clonedElement.style.transform = 'none';
+                        clonedElement.style.position = 'absolute';
+                        clonedElement.style.left = '0';
+                        clonedElement.style.top = '0';
+                    }
+                };
+                
+                html2canvas(receiptElement, options).then(canvas => {
+                    const ctx = canvas.getContext('2d');
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    
+                    const highQualityCanvas = document.createElement('canvas');
+                    highQualityCanvas.width = canvas.width;
+                    highQualityCanvas.height = canvas.height;
+                    const hqCtx = highQualityCanvas.getContext('2d');
+                    
+                    hqCtx.fillStyle = '#ffffff';
+                    hqCtx.fillRect(0, 0, highQualityCanvas.width, highQualityCanvas.height);
+                    
+                    hqCtx.drawImage(canvas, 0, 0);
+                    
+                    const link = document.createElement('a');
+                    link.download = fileName;
+                    link.href = highQualityCanvas.toDataURL('image/png', 1.0);
+                    
+                    receiptElement.classList.remove('visible');
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.disabled = false;
+                    
+                    document.getElementById('successMessage').style.opacity = '1';
+                    
+                    setTimeout(() => {
+                        alert(`تم تنزيل ${fileName} بنجاح!\nتم حفظ الملف في مجلد التنزيلات.`);
+                    }, 500);
+                    
+                }).catch(error => {
+                    console.error('خطأ في إنشاء الصورة:', error);
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.disabled = false;
+                    receiptElement.classList.remove('visible');
+                    document.getElementById('successMessage').style.opacity = '1';
+                    alert('حدث خطأ أثناء إنشاء الوصل. يرجى المحاولة مرة أخرى.');
+                });
+            }, 500);
+        }
+        
+        // ========== دوال رفع الملفات ==========
+        function triggerFileUpload() {
+            document.getElementById('oldIdUpload').click();
+        }
+        
+        function removeFile() {
+            resetFileUpload();
+        }
+        
+        function resetFileUpload() {
+            document.getElementById('oldIdUpload').value = '';
+            document.getElementById('filePreview').classList.remove('active');
+            document.getElementById('fileProgress').classList.remove('active');
+            document.getElementById('fileProgressBar').style.width = '0%';
+            oldIdFile = null;
+        }
+        
+        function resetPhotoUpload() {
+            document.getElementById('personalPhoto').value = '';
+            document.getElementById('cameraPhoto').value = '';
+            personalPhotoFile = null;
+            document.getElementById('photoPreview').classList.remove('active');
+            document.getElementById('photoProgress').classList.remove('active');
+            document.getElementById('photoProgressBar').style.width = '0%';
+        }
+        
+        function resetCardUpload() {
+            document.getElementById('cardFrontUpload').value = '';
+            document.getElementById('cardBackUpload').value = '';
+            cardFrontFile = null;
+            cardBackFile = null;
+            document.getElementById('cardFrontPreview').classList.remove('active');
+            document.getElementById('cardBackPreview').classList.remove('active');
+            document.getElementById('cardFrontProgress').classList.remove('active');
+            document.getElementById('cardBackProgress').classList.remove('active');
+            document.getElementById('cardFrontProgressBar').style.width = '0%';
+            document.getElementById('cardBackProgressBar').style.width = '0%';
+        }
+        
+        // تنسيق حجم الملف
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 بايت';
+            
+            const k = 1024;
+            const sizes = ['بايت', 'كيلوبايت', 'ميجابايت', 'جيجابايت'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+        
+        // ========== تهيئة الصفحة ==========
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('choiceScreen').style.display = 'block';
+            document.getElementById('formContainer').style.display = 'none';
+            
+            // إعداد أزرار الاختيار
+            document.getElementById('newChoiceBtn').addEventListener('click', function() {
+                selectChoice('new');
+            });
+            
+            document.getElementById('renewChoiceBtn').addEventListener('click', function() {
+                selectChoice('renew');
+            });
+            
+            // إعداد زر العودة
+            document.getElementById('backBtn').addEventListener('click', goBackToChoice);
+            
+            // إعداد زر المسح
+            document.getElementById('resetBtn').addEventListener('click', resetForm);
+            
+            // إعداد زر الإرسال
+            document.getElementById('membershipForm').addEventListener('submit', submitForm);
+            
+            // إعداد معالج الأحداث للملفات
+            document.getElementById('oldIdUpload').addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    const file = this.files[0];
+                    const maxSize = 5 * 1024 * 1024;
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+                    
+                    if (!allowedTypes.includes(file.type)) {
+                        showError('نوع الملف غير مدعوم. الرجاء رفع ملف بصيغة JPG، PNG أو PDF', 'صورة الهوية القديمة');
+                        return;
+                    }
+                    
+                    if (file.size > maxSize) {
+                        showError('حجم الملف كبير جداً. الحد الأقصى هو 5MB', 'صورة الهوية القديمة');
+                        return;
+                    }
+                    
+                    oldIdFile = file;
+                    
+                    document.getElementById('fileName').textContent = file.name;
+                    document.getElementById('fileSize').textContent = formatFileSize(file.size);
+                    document.getElementById('filePreview').classList.add('active');
+                    
+                    simulateUpload('fileProgress', 'fileProgressBar');
+                }
+            });
+            
+            // إعداد زر الصورة الشخصية الواحد
+            document.getElementById('photoUploadSingleBtn').addEventListener('click', openPhotoOptions);
+            
+            // إعداد أزرار نافذة خيارات الصورة
+            document.getElementById('chooseFromGalleryBtn').addEventListener('click', function() {
+                document.getElementById('personalPhoto').click();
+                closePhotoOptions();
+            });
+            
+            document.getElementById('takePhotoWithCameraBtn').addEventListener('click', openCamera);
+            
+            document.getElementById('cancelPhotoOptionsBtn').addEventListener('click', closePhotoOptions);
+            
+            // إعداد معالج الأحداث للصورة الشخصية
+            document.getElementById('personalPhoto').addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    handlePhotoFile(this.files[0]);
+                }
+            });
+            
+            // إعداد أزرار الكاميرا
+            document.getElementById('capturePhotoBtn').addEventListener('click', capturePhoto);
+            document.getElementById('cancelCameraBtn').addEventListener('click', closeCamera);
+            
+            // إعداد أزرار رسالة النجاح
+            document.getElementById('closeSuccessBtn').addEventListener('click', closeSuccessMessage);
+            document.getElementById('downloadReviewBtn').addEventListener('click', downloadReviewReceipt);
+            
+            // إعداد أزرار الخطأ
+            document.getElementById('closeErrorBtn').addEventListener('click', closeError);
+            
+            // إعداد أزرار إذن الكاميرا
+            document.getElementById('retryPermissionBtn').addEventListener('click', retryPermission);
+            document.getElementById('openSettingsBtn').addEventListener('click', openSettings);
+            document.getElementById('closePermissionBtn').addEventListener('click', closePermissionModal);
+            
+            // إعداد أزرار الصورة الشخصية
+            document.getElementById('removePhotoBtn').addEventListener('click', function() {
+                resetPhotoUpload();
+            });
+            
+            document.getElementById('removeFileBtn').addEventListener('click', function() {
+                removeFile();
+            });
+            
+            // إعداد أزرار البطاقة الموحدة
+            document.getElementById('cardFrontBtn').addEventListener('click', function() {
+                document.getElementById('cardFrontUpload').click();
+            });
+            
+            document.getElementById('cardBackBtn').addEventListener('click', function() {
+                document.getElementById('cardBackUpload').click();
+            });
+            
+            document.getElementById('removeCardFrontBtn').addEventListener('click', function() {
+                cardFrontFile = null;
+                document.getElementById('cardFrontPreview').classList.remove('active');
+            });
+            
+            document.getElementById('removeCardBackBtn').addEventListener('click', function() {
+                cardBackFile = null;
+                document.getElementById('cardBackPreview').classList.remove('active');
+            });
+            
+            // إعداد معالج الأحداث لرفع البطاقة الموحدة
+            document.getElementById('cardFrontUpload').addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    handleCardFrontFile(this.files[0]);
+                }
+            });
+            
+            document.getElementById('cardBackUpload').addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    handleCardBackFile(this.files[0]);
+                }
+            });
+            
+            // إعداد رفع الملف بالدراج آند دروب
+            document.getElementById('fileUploadLabel').addEventListener('click', function() {
+                document.getElementById('oldIdUpload').click();
+            });
+            
+            // إعداد إغلاق النافذة المنبثقة عند النقر على الخلفية
+            document.getElementById('overlay').addEventListener('click', function() {
+                if (document.getElementById('errorModal').style.display === 'block') {
+                    closeError();
+                } else if (document.getElementById('photoOptionsModal').style.display === 'block') {
+                    closePhotoOptions();
+                } else if (document.getElementById('successMessage').style.display === 'block') {
+                    closeSuccessMessage();
+                } else if (document.getElementById('permissionModal').style.display === 'block') {
+                    closePermissionModal();
+                }
+            });
+            
+            // تحسين تجربة اللمس على الهواتف
+            document.body.style.touchAction = 'manipulation';
+            
+            console.log('✅ استمارة الانتساب جاهزة للاستخدام!');
+            
+            // إضافة حدث قبل مغادرة الصفحة لإيقاف الكاميرا
+            window.addEventListener('beforeunload', function() {
+                if (cameraStream) {
+                    stopCamera();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
