@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     
     <style>
-        /* جميع الأنماط CSS تبقى كما هي */
+        /* جميع الأنماط CSS تبقى كما هي مع إزالة أنماط camera-frame */
         :root {
             --primary: #2c5282;
             --primary-dark: #1a3a5f;
@@ -3438,7 +3438,7 @@
             }
         }
         
-        // ========== دوال النافذة المنبثقة والوصلات المعدلة ==========
+        // ========== دوال النافذة المنبثقة والوصلات ==========
         
         function showSuccessMessage() {
             document.getElementById('receiptNameValue').textContent = currentFullName;
@@ -3487,23 +3487,11 @@
             }, 300);
         }
         
-        // ========== دالة تحميل الوصل المحسنة للعمل في جميع المتصفحات ==========
         function downloadReviewReceipt() {
             prepareReviewReceipt();
             
             setTimeout(() => {
-                // استخدام كائن Canvas لإنشاء الصورة
-                const receiptElement = document.getElementById('reviewReceipt');
-                
-                // إضافة مؤشر تحميل
-                const downloadBtn = document.getElementById('downloadReviewBtn');
-                const originalText = downloadBtn.innerHTML;
-                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
-                downloadBtn.disabled = true;
-                
-                // إنشاء صورة الوصل
-                createAndDownloadReceiptImage(receiptElement, currentReceiptId);
-                
+                captureReceiptAsImage('reviewReceipt', `وصل_مراجعة_${currentReceiptId}.png`);
             }, 300);
         }
         
@@ -3516,337 +3504,88 @@
             
             document.getElementById('reviewReceipt').classList.add('visible');
             
-            // إخفاء رسالة النجاح مؤقتاً أثناء إنشاء الصورة
-            document.getElementById('successMessage').style.opacity = '0.3';
+            const downloadBtn = document.getElementById('downloadReviewBtn');
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
+            downloadBtn.disabled = true;
+            
+            document.getElementById('successMessage').style.opacity = '0';
         }
         
-        // ========== دالة إنشاء وتنزيل الصورة المعدلة للعمل في جميع المتصفحات ==========
-        function createAndDownloadReceiptImage(element, receiptId) {
-            const fileName = `وصل_مراجعة_${receiptId}.png`;
+        function captureReceiptAsImage(elementId, fileName) {
+            const receiptElement = document.getElementById(elementId);
             
-            // محاولة استخدام html2canvas مع معالجة أفضل للأخطاء
-            const options = {
-                scale: 2, // زيادة الدقة
-                backgroundColor: '#ffffff',
-                useCORS: true,
-                logging: false,
-                allowTaint: true,
-                removeContainer: true,
-                imageTimeout: 15000,
-                onclone: function(clonedDoc) {
-                    const clonedElement = clonedDoc.getElementById('reviewReceipt');
-                    if (clonedElement) {
+            const downloadBtn = document.getElementById('downloadReviewBtn');
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
+            downloadBtn.disabled = true;
+            
+            setTimeout(() => {
+                const options = {
+                    scale: 1.5,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    logging: false,
+                    allowTaint: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    width: receiptElement.offsetWidth,
+                    height: receiptElement.offsetHeight,
+                    x: 0,
+                    y: 0,
+                    imageTimeout: 15000,
+                    onclone: function(clonedDoc) {
+                        const clonedElement = clonedDoc.getElementById(elementId);
                         clonedElement.style.transform = 'none';
-                        clonedElement.style.position = 'fixed';
+                        clonedElement.style.position = 'absolute';
                         clonedElement.style.left = '0';
                         clonedElement.style.top = '0';
-                        clonedElement.style.zIndex = '9999';
                     }
-                }
-            };
-            
-            html2canvas(element, options).then(canvas => {
-                // إخفاء الوصل بعد التقاط الصورة
-                document.getElementById('reviewReceipt').classList.remove('visible');
-                document.getElementById('successMessage').style.opacity = '1';
+                };
                 
-                // الحصول على رابط الصورة
-                const imageData = canvas.toDataURL('image/png', 1.0);
-                
-                // محاولة طرق متعددة للتحميل
-                if (tryMultipleDownloadMethods(imageData, fileName)) {
-                    showDownloadSuccess(fileName);
-                } else {
-                    showDownloadAlternative(imageData, fileName);
-                }
-                
-                // استعادة حالة الزر
-                const downloadBtn = document.getElementById('downloadReviewBtn');
-                downloadBtn.innerHTML = '<i class="fas fa-download"></i> تنزيل وصل المراجعة';
-                downloadBtn.disabled = false;
-                
-            }).catch(error => {
-                console.error('❌ خطأ في إنشاء الصورة:', error);
-                
-                // استعادة حالة الزر
-                const downloadBtn = document.getElementById('downloadReviewBtn');
-                downloadBtn.innerHTML = '<i class="fas fa-download"></i> تنزيل وصل المراجعة';
-                downloadBtn.disabled = false;
-                
-                document.getElementById('reviewReceipt').classList.remove('visible');
-                document.getElementById('successMessage').style.opacity = '1';
-                
-                // عرض رسالة خطأ مع خيارات بديلة
-                showDownloadError(fileName);
-            });
-        }
-        
-        // ========== دالة تجربة طرق تنزيل متعددة ==========
-        function tryMultipleDownloadMethods(imageData, fileName) {
-            try {
-                // الطريقة الأولى: استخدام createElement
-                try {
-                    const link = document.createElement('a');
-                    link.download = fileName;
-                    link.href = imageData;
-                    link.style.display = 'none';
+                html2canvas(receiptElement, options).then(canvas => {
+                    const ctx = canvas.getContext('2d');
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
                     
-                    document.body.appendChild(link);
-                    link.click();
+                    const highQualityCanvas = document.createElement('canvas');
+                    highQualityCanvas.width = canvas.width;
+                    highQualityCanvas.height = canvas.height;
+                    const hqCtx = highQualityCanvas.getContext('2d');
                     
-                    setTimeout(() => {
-                        document.body.removeChild(link);
-                        // إطلاق حدث لتحرير الذاكرة
-                        URL.revokeObjectURL(link.href);
-                    }, 100);
+                    hqCtx.fillStyle = '#ffffff';
+                    hqCtx.fillRect(0, 0, highQualityCanvas.width, highQualityCanvas.height);
                     
-                    return true;
-                } catch (e) {
-                    console.log('الطريقة الأولى فشلت:', e.message);
-                }
-                
-                // الطريقة الثانية: استخدام Blob
-                try {
-                    const blob = dataURLtoBlob(imageData);
-                    const url = URL.createObjectURL(blob);
+                    hqCtx.drawImage(canvas, 0, 0);
                     
                     const link = document.createElement('a');
                     link.download = fileName;
-                    link.href = url;
-                    link.style.display = 'none';
+                    link.href = highQualityCanvas.toDataURL('image/png', 1.0);
+                    
+                    receiptElement.classList.remove('visible');
                     
                     document.body.appendChild(link);
                     link.click();
+                    document.body.removeChild(link);
+                    
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.disabled = false;
+                    
+                    document.getElementById('successMessage').style.opacity = '1';
                     
                     setTimeout(() => {
-                        document.body.removeChild(link);
-                        URL.revokeObjectURL(url);
-                    }, 100);
+                        alert(`تم تنزيل ${fileName} بنجاح!\nتم حفظ الملف في مجلد التنزيلات.`);
+                    }, 500);
                     
-                    return true;
-                } catch (e) {
-                    console.log('الطريقة الثانية فشلت:', e.message);
-                }
-                
-                // الطريقة الثالثة: استخدام window.open (للمتصفحات المحمية)
-                try {
-                    const newWindow = window.open();
-                    newWindow.document.write(`
-                        <html>
-                            <head><title>${fileName}</title></head>
-                            <body style="margin:0;padding:0;background:#f0f0f0;display:flex;justify-content:center;align-items:center;height:100vh;">
-                                <div style="text-align:center;">
-                                    <img src="${imageData}" style="max-width:90vw;max-height:90vh;border:1px solid #ccc;">
-                                    <p style="margin-top:20px;color:#666;">تم إنشاء الصورة بنجاح. يرجى الضغط مطولاً على الصورة وحفظها.</p>
-                                </div>
-                            </body>
-                        </html>
-                    `);
-                    newWindow.document.close();
-                    return true;
-                } catch (e) {
-                    console.log('الطريقة الثالثة فشلت:', e.message);
-                }
-                
-                return false;
-                
-            } catch (error) {
-                console.error('❌ جميع طرق التنزيل فشلت:', error);
-                return false;
-            }
-        }
-        
-        // ========== دوال مساعدة للتنزيل ==========
-        function dataURLtoBlob(dataURL) {
-            const arr = dataURL.split(',');
-            const mime = arr[0].match(/:(.*?);/)[1];
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            
-            while (n--) {
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-            
-            return new Blob([u8arr], { type: mime });
-        }
-        
-        // ========== عرض رسائل النجاح والخطأ ==========
-        function showDownloadSuccess(fileName) {
-            // إنشاء نافذة منبثقة للنجاح
-            const successModal = document.createElement('div');
-            successModal.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 25px;
-                border-radius: 10px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                z-index: 9999;
-                text-align: center;
-                max-width: 90%;
-                width: 350px;
-                border: 3px solid var(--success);
-            `;
-            
-            successModal.innerHTML = `
-                <div style="color: var(--success); font-size: 50px; margin-bottom: 15px;">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h3 style="color: #22543d; margin-bottom: 10px;">تم التنزيل بنجاح!</h3>
-                <p style="color: #2d3748; margin-bottom: 20px;">تم حفظ الملف: <strong>${fileName}</strong> في معرض الصور</p>
-                <button id="closeSuccessModalBtn" style="
-                    background: linear-gradient(135deg, var(--success) 0%, #2f855a 100%);
-                    color: white;
-                    border: none;
-                    padding: 12px 25px;
-                    border-radius: 8px;
-                    font-weight: 700;
-                    cursor: pointer;
-                    width: 100%;
-                ">
-                    <i class="fas fa-check"></i> تم
-                </button>
-            `;
-            
-            document.body.appendChild(successModal);
-            
-            // إضافة زر إغلاق
-            document.getElementById('closeSuccessModalBtn').addEventListener('click', function() {
-                document.body.removeChild(successModal);
-            });
-            
-            // إغلاق تلقائي بعد 5 ثواني
-            setTimeout(() => {
-                if (document.body.contains(successModal)) {
-                    document.body.removeChild(successModal);
-                }
-            }, 5000);
-        }
-        
-        function showDownloadAlternative(imageData, fileName) {
-            // عرض خيارات بديلة
-            const alternativeModal = document.createElement('div');
-            alternativeModal.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 25px;
-                border-radius: 10px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                z-index: 9999;
-                text-align: center;
-                max-width: 90%;
-                width: 400px;
-                border: 3px solid var(--warning);
-            `;
-            
-            alternativeModal.innerHTML = `
-                <div style="color: var(--warning); font-size: 50px; margin-bottom: 15px;">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <h3 style="color: #b45309; margin-bottom: 10px;">تنزيل بديل</h3>
-                <p style="color: #2d3748; margin-bottom: 15px;">لم يتمكن المتصفح من تنزيل الملف تلقائياً. يرجى استخدام إحدى الطرق التالية:</p>
-                
-                <div style="background: #fefce8; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid #fef08a;">
-                    <p style="margin: 0; color: #713f12;"><strong>الطريقة 1:</strong> اضغط مطولاً على الصورة أدناه واختر "حفظ الصورة"</p>
-                </div>
-                
-                <img src="${imageData}" style="max-width: 100%; border: 1px solid #ddd; margin: 10px 0;">
-                
-                <div style="background: #eff6ff; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid #bfdbfe;">
-                    <p style="margin: 0; color: #1e3a8a;"><strong>الطريقة 2:</strong> افتح الرابط في متصفح خارجي</p>
-                </div>
-                
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button id="openInBrowserBtn" style="
-                        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-                        color: white;
-                        border: none;
-                        padding: 12px 20px;
-                        border-radius: 8px;
-                        font-weight: 700;
-                        cursor: pointer;
-                        flex: 1;
-                    ">
-                        <i class="fas fa-external-link-alt"></i> فتح في متصفح
-                    </button>
-                    <button id="closeAltModalBtn" style="
-                        background: linear-gradient(135deg, var(--gray) 0%, #4a5568 100%);
-                        color: white;
-                        border: none;
-                        padding: 12px 20px;
-                        border-radius: 8px;
-                        font-weight: 700;
-                        cursor: pointer;
-                        flex: 1;
-                    ">
-                        <i class="fas fa-times"></i> إلغاء
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(alternativeModal);
-            
-            // إضافة أزرار التحكم
-            document.getElementById('openInBrowserBtn').addEventListener('click', function() {
-                window.open(imageData, '_blank');
-            });
-            
-            document.getElementById('closeAltModalBtn').addEventListener('click', function() {
-                document.body.removeChild(alternativeModal);
-            });
-        }
-        
-        function showDownloadError(fileName) {
-            // عرض رسالة خطأ
-            const errorModal = document.createElement('div');
-            errorModal.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 25px;
-                border-radius: 10px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                z-index: 9999;
-                text-align: center;
-                max-width: 90%;
-                width: 350px;
-                border: 3px solid var(--secondary);
-            `;
-            
-            errorModal.innerHTML = `
-                <div style="color: var(--secondary); font-size: 50px; margin-bottom: 15px;">
-                    <i class="fas fa-times-circle"></i>
-                </div>
-                <h3 style="color: #c53030; margin-bottom: 10px;">خطأ في التنزيل</h3>
-                <p style="color: #2d3748; margin-bottom: 20px;">حدث خطأ أثناء محاولة تنزيل ${fileName}. يرجى المحاولة مرة أخرى أو تصوير الشاشة يدوياً.</p>
-                <button id="closeErrorModalBtn" style="
-                    background: linear-gradient(135deg, var(--secondary) 0%, #c53030 100%);
-                    color: white;
-                    border: none;
-                    padding: 12px 25px;
-                    border-radius: 8px;
-                    font-weight: 700;
-                    cursor: pointer;
-                    width: 100%;
-                ">
-                    <i class="fas fa-times"></i> إغلاق
-                </button>
-            `;
-            
-            document.body.appendChild(errorModal);
-            
-            // إضافة زر إغلاق
-            document.getElementById('closeErrorModalBtn').addEventListener('click', function() {
-                document.body.removeChild(errorModal);
-            });
+                }).catch(error => {
+                    console.error('خطأ في إنشاء الصورة:', error);
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.disabled = false;
+                    receiptElement.classList.remove('visible');
+                    document.getElementById('successMessage').style.opacity = '1';
+                    alert('حدث خطأ أثناء إنشاء الوصل. يرجى المحاولة مرة أخرى.');
+                });
+            }, 500);
         }
         
         // ========== دوال رفع الملفات ==========
